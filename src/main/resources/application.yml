@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: SpringBootAdmin
+  security:
+    user:
+      name: admin
+      password: admin
+  profiles: local-dev
+      
+server:
+  port: 54067
+logging:
+  config: classpath:logback-spring.xml
+  
+---
+spring:
+  application:
+    name: SpringBootAdmin
+  security:
+    user:
+      name: admin
+      password: adminDevPwd
+  profiles: dev
+      
+server:
+  port: 54067
+logging:
+  config: classpath:logback-spring.xml

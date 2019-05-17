@@ -1,0 +1,57 @@
+<configuration>
+    <include resource="org/springframework/boot/logging/logback/defaults.xml" />
+    <springProperty scope="context" name="SPRING_APP_NAME" source="spring.application.name" />
+    <springProperty scope="context" name="RANDOM_VALUE" source="random.value" />
+    <property name="LOGGING_PATH" value="log" />
+    <property name="CONSOLE_LOG_PATTERN" value="%date{ISO8601} %-5level %logger{15} - %msg%n" />
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGGING_PATH}/${SPRING_APP_NAME}.${RANDOM_VALUE}.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- daily rollover -->
+            <fileNamePattern>${LOGGING_PATH}/${SPRING_APP_NAME}.${RANDOM_VALUE}-%d{yyyyMMdd}.log</fileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+    </appender>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </encoder>
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <pattern>${CONSOLE_LOG_PATTERN}</pattern>
+        </layout>
+    </appender>
+    <springProfile name="default,dev,local-dev,acc,bat">
+        <logger name="org.springframework" level="ERROR">
+            <appender-ref ref="FILE" />
+        </logger>
+        <logger name="com.spring" level="DEBUG">
+            <appender-ref ref="FILE" />
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+    <springProfile name="ref">
+        <logger name="org.springframework" level="WARN">
+            <appender-ref ref="FILE" />
+        </logger>
+        <logger name="com.spring" level="INFO">
+            <appender-ref ref="FILE" />
+        </logger>
+        <root level="INFO">
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+    <springProfile name="prod">
+        <logger name="org.springframework" level="ERROR">
+            <appender-ref ref="FILE" />
+        </logger>
+        <logger name="com.spring" level="WARN">
+            <appender-ref ref="FILE" />
+        </logger>
+    
+    </springProfile>
+
+</configuration>
